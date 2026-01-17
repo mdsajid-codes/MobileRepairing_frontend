@@ -1,26 +1,21 @@
 import { useState } from 'react';
-import { Smartphone, Battery, Zap, Droplet, ArrowRight, ArrowLeft, Calendar, MapPin, Truck, Check } from 'lucide-react';
+import { Smartphone, Battery, Zap, Droplet, ArrowRight, ArrowLeft, Check, Truck } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import db from '../data/db.json';
+
+// Map icon strings to components
+const iconMap = {
+    Smartphone,
+    Battery,
+    Zap,
+    Droplet
+};
 
 const steps = [
     { id: 1, name: 'Device' },
     { id: 2, name: 'Issue' },
     { id: 3, name: 'Service' },
     { id: 4, name: 'Schedule' },
-];
-
-const devices = [
-    { id: 'iphone', name: 'iPhone', icon: Smartphone },
-    { id: 'samsung', name: 'Samsung', icon: Smartphone },
-    { id: 'google', name: 'Google Pixel', icon: Smartphone },
-    { id: 'ipad', name: 'iPad', icon: Smartphone },
-];
-
-const issues = [
-    { id: 'screen', name: 'Broken Screen', icon: Smartphone, price: '$89' },
-    { id: 'battery', name: 'Battery Draining', icon: Battery, price: '$49' },
-    { id: 'port', name: 'Charging Port', icon: Zap, price: '$59' },
-    { id: 'water', name: 'Water Damage', icon: Droplet, price: 'Diagnostics' },
 ];
 
 const Booking = () => {
@@ -31,6 +26,7 @@ const Booking = () => {
         serviceType: '', // 'doorstep' or 'pickup'
         date: '',
         time: '',
+        price: ''
     });
 
     const handleNext = () => {
@@ -41,12 +37,19 @@ const Booking = () => {
         if (currentStep > 1) setCurrentStep(currentStep - 1);
     };
 
-    const selectOption = (key, value) => {
-        setFormData({ ...formData, [key]: value });
-        // Auto advance for simple selections
-        if (currentStep < 3) {
-            setTimeout(() => handleNext(), 300);
-        }
+    const selectDevice = (deviceId) => {
+        setFormData({ ...formData, device: deviceId });
+        handleNext();
+    };
+
+    const selectIssue = (issueId, price) => {
+        setFormData({ ...formData, issue: issueId, price: price });
+        handleNext();
+    };
+
+    const selectServiceType = (type) => {
+        setFormData({ ...formData, serviceType: type });
+        handleNext();
     };
 
     return (
@@ -86,19 +89,22 @@ const Booking = () => {
                     <div className="animate-fadeIn">
                         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Select your device</h2>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            {devices.map((device) => (
-                                <button
-                                    key={device.id}
-                                    onClick={() => selectOption('device', device.id)}
-                                    className={`p-6 rounded-xl border-2 flex flex-col items-center justify-center gap-4 transition-all ${formData.device === device.id
-                                            ? 'border-blue-600 bg-blue-50 text-blue-700'
-                                            : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
-                                        }`}
-                                >
-                                    <device.icon className={`w-10 h-10 ${formData.device === device.id ? 'text-blue-600' : 'text-gray-400'}`} />
-                                    <span className="font-semibold">{device.name}</span>
-                                </button>
-                            ))}
+                            {db.devices.map((device) => {
+                                const IconComponent = iconMap[device.icon] || Smartphone;
+                                return (
+                                    <button
+                                        key={device.id}
+                                        onClick={() => selectDevice(device.name)}
+                                        className={`p-6 rounded-xl border-2 flex flex-col items-center justify-center gap-4 transition-all ${formData.device === device.name
+                                                ? 'border-blue-600 bg-blue-50 text-blue-700'
+                                                : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
+                                            }`}
+                                    >
+                                        <IconComponent className={`w-10 h-10 ${formData.device === device.name ? 'text-blue-600' : 'text-gray-400'}`} />
+                                        <span className="font-semibold">{device.name}</span>
+                                    </button>
+                                );
+                            })}
                         </div>
                     </div>
                 )}
@@ -108,27 +114,30 @@ const Booking = () => {
                     <div className="animate-fadeIn">
                         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">What's the issue?</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {issues.map((issue) => (
-                                <button
-                                    key={issue.id}
-                                    onClick={() => selectOption('issue', issue.id)}
-                                    className={`p-4 rounded-xl border-2 flex items-center justify-between text-left transition-all ${formData.issue === issue.id
-                                            ? 'border-blue-600 bg-blue-50'
-                                            : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
-                                        }`}
-                                >
-                                    <div className="flex items-center gap-4">
-                                        <div className={`p-2 rounded-lg ${formData.issue === issue.id ? 'bg-blue-200' : 'bg-gray-100'}`}>
-                                            <issue.icon className={`w-6 h-6 ${formData.issue === issue.id ? 'text-blue-700' : 'text-gray-600'}`} />
+                            {db.issues.map((issue) => {
+                                const IconComponent = iconMap[issue.icon] || Smartphone;
+                                return (
+                                    <button
+                                        key={issue.id}
+                                        onClick={() => selectIssue(issue.name, issue.price)}
+                                        className={`p-4 rounded-xl border-2 flex items-center justify-between text-left transition-all ${formData.issue === issue.name
+                                                ? 'border-blue-600 bg-blue-50'
+                                                : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
+                                            }`}
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <div className={`p-2 rounded-lg ${formData.issue === issue.name ? 'bg-blue-200' : 'bg-gray-100'}`}>
+                                                <IconComponent className={`w-6 h-6 ${formData.issue === issue.name ? 'text-blue-700' : 'text-gray-600'}`} />
+                                            </div>
+                                            <div>
+                                                <h3 className="font-semibold text-gray-900">{issue.name}</h3>
+                                                <p className="text-sm text-gray-500">Approx. {issue.duration}</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h3 className="font-semibold text-gray-900">{issue.name}</h3>
-                                            <p className="text-sm text-gray-500">Approx. 45 mins</p>
-                                        </div>
-                                    </div>
-                                    <span className="font-bold text-blue-600">{issue.price}</span>
-                                </button>
-                            ))}
+                                        <span className="font-bold text-blue-600">{issue.price}</span>
+                                    </button>
+                                );
+                            })}
                         </div>
                     </div>
                 )}
@@ -139,10 +148,7 @@ const Booking = () => {
                         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">How do you want it repaired?</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <button
-                                onClick={() => {
-                                    setFormData({ ...formData, serviceType: 'doorstep' });
-                                    handleNext();
-                                }}
+                                onClick={() => selectServiceType('doorstep')}
                                 className={`relative p-6 rounded-xl border-2 text-left transition-all ${formData.serviceType === 'doorstep' ? 'border-blue-600 bg-blue-50 ring-2 ring-blue-500 ring-opacity-50' : 'border-gray-200 hover:border-blue-400'
                                     }`}
                             >
@@ -157,10 +163,7 @@ const Booking = () => {
                             </button>
 
                             <button
-                                onClick={() => {
-                                    setFormData({ ...formData, serviceType: 'pickup' });
-                                    handleNext();
-                                }}
+                                onClick={() => selectServiceType('pickup')}
                                 className={`p-6 rounded-xl border-2 text-left transition-all ${formData.serviceType === 'pickup' ? 'border-orange-500 bg-orange-50 ring-2 ring-orange-500 ring-opacity-50' : 'border-gray-200 hover:border-orange-400'
                                     }`}
                             >
@@ -193,11 +196,11 @@ const Booking = () => {
                             <dl className="space-y-3 text-sm">
                                 <div className="flex justify-between">
                                     <dt className="text-gray-500">Device</dt>
-                                    <dd className="font-medium text-gray-900 capitalize">{formData.device || 'iPhone'}</dd>
+                                    <dd className="font-medium text-gray-900 capitalize">{formData.device}</dd>
                                 </div>
                                 <div className="flex justify-between">
                                     <dt className="text-gray-500">Issue</dt>
-                                    <dd className="font-medium text-gray-900 capitalize">{formData.issue || 'Screen Repair'}</dd>
+                                    <dd className="font-medium text-gray-900 capitalize">{formData.issue}</dd>
                                 </div>
                                 <div className="flex justify-between">
                                     <dt className="text-gray-500">Service Type</dt>
@@ -205,14 +208,14 @@ const Booking = () => {
                                 </div>
                                 <div className="border-t border-gray-200 pt-3 flex justify-between font-bold text-lg">
                                     <dt className="text-gray-900">Total Estimate</dt>
-                                    <dd className="text-blue-600">$89.00</dd>
+                                    <dd className="text-blue-600">{formData.price}</dd>
                                 </div>
                             </dl>
                         </div>
 
                         <div className="mt-8 text-center">
                             <Link to="/" className="text-blue-600 hover:text-blue-800 font-medium">
-                                Return to maintenance
+                                Return to home
                             </Link>
                         </div>
                     </div>
@@ -231,7 +234,6 @@ const Booking = () => {
                         <ArrowLeft className="w-5 h-5 mr-2" />
                         Back
                     </button>
-                    {/* Next button handled by selection for better UX, but optional here if needed */}
                 </div>
             )}
         </div>

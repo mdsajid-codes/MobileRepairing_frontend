@@ -1,0 +1,164 @@
+{
+    "devices": [
+        {
+            "id": "iphone",
+            "name": "iPhone",
+            "icon": "Smartphone"
+        },
+        {
+            "id": "samsung",
+            "name": "Samsung",
+            "icon": "Smartphone"
+        },
+        {
+            "id": "google",
+            "name": "Google Pixel",
+            "icon": "Smartphone"
+        },
+        {
+            "id": "ipad",
+            "name": "iPad",
+            "icon": "Smartphone"
+        }
+    ],
+    "issues": [
+        {
+            "id": "screen",
+            "name": "Broken Screen",
+            "icon": "Smartphone",
+            "price": "₹1,499",
+            "duration": "30 mins"
+        },
+        {
+            "id": "battery",
+            "name": "Battery Draining",
+            "icon": "Battery",
+            "price": "₹999",
+            "duration": "20 mins"
+        },
+        {
+            "id": "port",
+            "name": "Charging Port",
+            "icon": "Zap",
+            "price": "₹799",
+            "duration": "45 mins"
+        },
+        {
+            "id": "water",
+            "name": "Water Damage",
+            "icon": "Droplet",
+            "price": "Diagnostics",
+            "duration": "24-48 hrs"
+        }
+    ],
+    "services": [
+        {
+            "category": "Common Repairs",
+            "items": [
+                {
+                    "name": "Screen Replacement",
+                    "price": "₹1,499+",
+                    "duration": "30 mins",
+                    "icon": "Smartphone",
+                    "description": "Fix cracked or unresponsive screens. OEM quality glass."
+                },
+                {
+                    "name": "Battery Replacement",
+                    "price": "₹999+",
+                    "duration": "20 mins",
+                    "icon": "Battery",
+                    "description": "Restore your phone's battery life to 100% capacity."
+                },
+                {
+                    "name": "Charging Port",
+                    "price": "₹799+",
+                    "duration": "45 mins",
+                    "icon": "Zap",
+                    "description": "Fix loose connection or slow charging issues."
+                },
+                {
+                    "name": "Water Damage Diagnosis",
+                    "price": "₹499",
+                    "duration": "24-48 hrs",
+                    "icon": "Droplet",
+                    "description": "Deep cleaning and ultrasonic treatment."
+                }
+            ]
+        },
+        {
+            "category": "Advanced Repairs",
+            "items": [
+                {
+                    "name": "Camera Replacement",
+                    "price": "₹1,299+",
+                    "duration": "40 mins",
+                    "icon": "Camera",
+                    "description": "Fix blurry photos or cracked camera glass."
+                },
+                {
+                    "name": "Speaker/Mic Repair",
+                    "price": "₹899+",
+                    "duration": "30 mins",
+                    "icon": "Speaker",
+                    "description": "Restoring clear audio for calls and media."
+                },
+                {
+                    "name": "Back Glass Fix",
+                    "price": "₹1,999+",
+                    "duration": "2 hrs",
+                    "icon": "Smartphone",
+                    "description": "Laser removal of broken back glass."
+                },
+                {
+                    "name": "Signal/WiFi Issues",
+                    "price": "₹1,199+",
+                    "duration": "45 mins",
+                    "icon": "Wifi",
+                    "description": "Antenna replacement and logic board diagnosis."
+                }
+            ]
+        },
+        {
+            "category": "Software Services",
+            "items": [
+                {
+                    "name": "Data Recovery",
+                    "price": "₹1,999+",
+                    "duration": "2-5 Days",
+                    "icon": "Database",
+                    "description": "Recover lost photos, contacts, and files from dead devices."
+                },
+                {
+                    "name": "Software Flash",
+                    "price": "₹499",
+                    "duration": "1 hr",
+                    "icon": "Smartphone",
+                    "description": "Fix boot loops, stuck on logo, or software bugs."
+                }
+            ]
+        }
+    ],
+    "orders": [
+        {
+            "id": "123",
+            "device": "iPhone 13 Pro",
+            "service": "Screen Replacement",
+            "currentStep": 3,
+            "estimatedDelivery": "Today, 6:00 PM"
+        },
+        {
+            "id": "456",
+            "device": "Samsung S21",
+            "service": "Battery Replacement",
+            "currentStep": 5,
+            "estimatedDelivery": "Delivered"
+        },
+        {
+            "id": "789",
+            "device": "OnePlus 9",
+            "service": "Charging Port",
+            "currentStep": 2,
+            "estimatedDelivery": "Tomorrow, 11:00 AM"
+        }
+    ]
+}
